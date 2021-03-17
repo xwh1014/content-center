@@ -1,0 +1,18 @@
+
+spring:
+  datasource:
+    driverClassName: com.mysql.jdbc.Driver
+    url: jdbc:mysql://47.115.21.244:3306/content_center?useSSL=false
+    username: root
+    password: root
+  cloud:
+      nacos:
+        discovery:
+          server-addr: localhost:8848
+          metadata:
+            xwh: xiewenhui
+            zfl: zhoufulin
+  application:
+      name: content-centon
+server:
+  port: 9091

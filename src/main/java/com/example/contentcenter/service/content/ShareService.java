@@ -2,6 +2,7 @@ package com.example.contentcenter.service.content;
 
 import com.example.contentcenter.dao.content.ShareMapper;
 import com.example.contentcenter.domain.entity.content.Share;
+import com.example.contentcenter.feignClient.UserCenterFeignClient;
 import com.example.domain.dto.content.ShareDTO;
 import com.example.domain.dto.user.UserDTO;
 import lombok.RequiredArgsConstructor;
@@ -33,8 +34,9 @@ public class ShareService {
     //获取实例
 //    private final DiscoveryClient discoveryClient;
 
-    private final RestTemplate restTemplate;
+//    private final RestTemplate restTemplate;
 
+      private final UserCenterFeignClient userCenterFeignClient;
     public ShareDTO findById(Integer id){
         Share share = this.shareMapper.selectByPrimaryKey(id);
         Integer userId = share.getUserId();
@@ -51,11 +53,13 @@ public class ShareService {
 //                .collect(Collectors.toList());
 //                 int i = ThreadLocalRandom.current().nextInt(targetUrls.size());
 //        log.info(targetUrls.get(i));
-        UserDTO userDTO = this.restTemplate.getForObject(
-                "http://user-center/users/{userId}",
-                UserDTO.class,
-                userId
-        );
+        UserDTO userDTO = this.userCenterFeignClient.findById(userId);
+        //RestTemplate通信
+//        UserDTO userDTO = this.restTemplate.getForObject(
+//                "http://user-center/users/{userId}",
+//                UserDTO.class,
+//                userId
+//        );
         //消息的装配
 //        Share.builder().id(share.getId()).build();
         ShareDTO shareDTO = new ShareDTO();

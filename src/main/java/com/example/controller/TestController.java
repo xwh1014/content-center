@@ -2,6 +2,9 @@ package com.example.controller;
 
 import com.example.contentcenter.dao.content.ShareMapper;
 import com.example.contentcenter.domain.entity.content.Share;
+import com.example.contentcenter.feignClient.TestBaiduFeignClient;
+import com.example.contentcenter.feignClient.TestUserCenterFeignClient;
+import com.example.domain.dto.user.UserDTO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.client.ServiceInstance;
@@ -49,6 +52,22 @@ public class TestController {
     @GetMapping("/test2")
     public List<ServiceInstance> setDiscoveryClient(){
         return this.discoveryClient.getInstances("user-center");
+    }
+
+    @Autowired
+    private TestUserCenterFeignClient testUserCenterFeignClient;
+
+    @GetMapping("test-get")
+    public UserDTO query(UserDTO userDTO) {
+        return testUserCenterFeignClient.query(userDTO);
+    }
+
+    @Autowired
+    private TestBaiduFeignClient testBaiduFeignClient;
+
+    @GetMapping("baidu")
+    public String baiduIndex() {
+        return this.testBaiduFeignClient.index();
     }
 
 }
